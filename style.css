@@ -1,0 +1,75 @@
+
+:root {
+  --success-icon: "✅ ";
+  --warning-icon: "🔔 ";
+  --error-icon: "❌ ";
+}
+
+body {
+  width: 300px;
+  height: 400px;
+  overflow-y: scroll;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  padding: 10px;
+}
+nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.nav-btn-group {
+  display: flex;
+  gap: 10px;
+}
+
+.toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  background-color: #52c41a;
+  color: #fff;
+  font-size: 16px;
+  border-radius: 5px;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
+}
+
+.toast.show {
+  opacity: 1;
+}
+/* Success toast */
+.toast.toast-success {
+  background-color: #f6ffed;
+  color: #52c41a;
+}
+
+/* Warning toast */
+.toast.toast-warning {
+  background-color: #fffbe6;
+  color: #faad14;
+}
+
+/* Error toast */
+.toast.toast-error {
+  background-color: #fff1f0;
+  color: #f5222d;
+}
+
+.toast.toast-success::before {
+  content: var(--success-icon);
+}
+
+/* Warning toast */
+.toast.toast-warning::before {
+  content: var(--warning-icon);
+}
+
+/* Error toast */
+.toast.toast-error::before {
+  content: var(--error-icon);
+}
