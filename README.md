@@ -1,2 +1,24 @@
-# select-to-note
-A simple note taking extension
+
+# 📝🔖 select-to-note - 简洁的文本记录谷歌插件
+
+A simple note taking extension。一个简洁实用的谷歌浏览器插件，它支持用户记录所选中的文本，并进行快速复制。主要应用场景是在阅读英文网站时，记录生词或者常用词汇，以帮助用户积累英语单词，并配合 Anki Deck 生成工具，可以生成自己的单词背诵本。
+
+## 使用说明
+
+1. 下载并安装本插件。
+2. 在浏览器中打开需要记录文本的页面，选中需要记录的文本。
+3. 右键打开菜单，点击插件图标，文本会保存记录。
+4. 点击在右上角的插件，可以查看累计的文本内容，支持清空和复制。
+5. 点击复制，文本复制到剪切板，将内容粘贴到Anki Deck 生成工具上使用，生成的单词背诵本。
+
+## 安装方法
+
+1. 克隆项目到本地：`git clone git@github.com:janice143/select-to-note.git`
+2. 打开 Chrome 浏览器，在地址栏输入 `chrome://extensions/` 并回车，打开扩展程序管理界面。
+3. 在右上角开启开发者模式，然后点击左侧的“加载已解压的扩展程序”，选择 Clone 下来的项目文件夹即可。
+
+## 技术栈
+
+- HTML、CSS、JavaScript
+- Chrome 扩展程序 API
+
