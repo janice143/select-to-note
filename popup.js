@@ -1,131 +1,154 @@
-const titleEl = document.querySelector("#title");
-const noteListEl = document.querySelector("#noteList");
-const clsBtnEl = document.querySelector(".clear");
-const cpBtnEl = document.querySelector(".copy");
+const titleEl = document.querySelector('#title');
+const noteListEl = document.querySelector('#noteList');
+const clsBtnEl = document.querySelector('.clear');
+const cpBtnEl = document.querySelector('.copy');
 
 const TOAST_THEME_MAP = {
   SUCCESS: {
-    label: "success",
-    value: "toast-success",
+    label: 'success',
+    value: 'toast-success'
   },
   WARNING: {
-    label: "warning",
-    value: "toast-warning",
+    label: 'warning',
+    value: 'toast-warning'
   },
   ERROR: {
-    label: "error",
-    value: "toast-error",
-  },
+    label: 'error',
+    value: 'toast-error'
+  }
 };
 
 /**
- * 加载
+ * Load the note list on DOMContentLoaded event
  */
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
   addNoteToBoard();
 });
 
 /**
- * 清空
+ * Clear the note list
  */
-clsBtnEl.addEventListener("click", async () => {
-  initNodeList();
-  showToast("清空成功");
+clsBtnEl.addEventListener('click', async () => {
+  try {
+    await initNoteList();
+    showToast('Cleared successfully');
+  } catch (error) {
+    showToast('Failed to clear', TOAST_THEME_MAP.ERROR.label);
+  }
 });
 
 /**
- * 一键复制
+ * Copy all notes to clipboard
  */
-cpBtnEl.addEventListener("click", async () => {
-  const flag = await copyToClipboard();
-  flag
-    ? showToast("复制成功")
-    : showToast("无内容可复制", TOAST_THEME_MAP.WARNING.label);
+cpBtnEl.addEventListener('click', async () => {
+  try {
+    const flag = await copyToClipboard();
+    flag
+      ? showToast('Copied successfully')
+      : showToast('No content to copy', TOAST_THEME_MAP.WARNING.label);
+  } catch (error) {
+    showToast('Failed to copy', TOAST_THEME_MAP.ERROR.label);
+  }
 });
 
+/**
+ * Get the note list from chrome.storage.sync
+ */
 const getNoteListProm = async () => {
-  const res = await chrome.storage.sync.get();
-  const { noteList } = res;
-  return noteList;
+  try {
+    const res = await chrome.storage.sync.get();
+    const { noteList = [] } = res;
+    return noteList;
+  } catch (error) {
+    console.error('Error fetching note list:', error);
+    return [];
+  }
 };
 
-const initNodeList = () => {
-  chrome.storage.sync.set({ noteList: [] });
-  showEmpty();
+/**
+ * Initialize the note list as an empty array
+ */
+const initNoteList = async () => {
+  try {
+    await chrome.storage.sync.set({ noteList: [] });
+    showEmpty();
+  } catch (error) {
+    console.error('Error initializing note list:', error);
+    throw error;
+  }
 };
 
+/**
+ * Add notes to the board by creating and appending elements to the DOM
+ */
 const addNoteToBoard = async () => {
   const noteList = await getNoteListProm();
 
   if (!noteList.length) return showEmpty();
 
+  const fragment = document.createDocumentFragment(); // Create a document fragment
+
   noteList.forEach((note, index) => {
-    const noteElement = document.createElement("p");
+    const noteElement = document.createElement('p');
     noteElement.textContent = `${index + 1}. ${note}`;
-    noteListEl.appendChild(noteElement);
+    fragment.appendChild(noteElement); // Add each note to the fragment
   });
+
+  noteListEl.appendChild(fragment); // Append the fragment to the DOM
 };
 
+/**
+ * Display a message when no notes are present
+ */
 const showEmpty = () => {
-  noteListEl.innerHTML = "什么都没有~";
+  noteListEl.innerHTML = 'Nothing here yet~';
 };
 
+/**
+ * Copy all notes to clipboard
+ */
 const copyToClipboard = async () => {
-  const nodeList = await getNoteListProm();
-  if (!nodeList.length) return false;
+  const noteList = await getNoteListProm();
+  if (!noteList.length) return false;
 
-  const textToCopy = nodeList.join("\n");
+  const textToCopy = noteList.join('\n');
 
-  // const tempInput = document.createElement("input"); // 创建临时输入框
-  // tempInput.value = textToCopy; // 将文本赋值给临时输入框
-  // document.body.appendChild(tempInput); // 将临时输入框添加到文档中
-  // tempInput.select(); // 选中临时输入框中的文本
-  // document.execCommand("copy"); // 将选定文本复制到剪贴板
-  // document.body.removeChild(tempInput); // 从文档中删除临时输入框
-
-  //  EI不兼容
-  await navigator.clipboard.writeText(textToCopy);
-  return true;
-};
-
-const showToast = (
-  message,
-  type = TOAST_THEME_MAP.SUCCESS.label,
-  duration = 500
-) => {
-  // 创建 Toast 元素
-  const toast = document.createElement("div");
-  toast.classList.add("toast");
-  toast.textContent = message;
-  setToastTheme(toast, type);
-  // 将 Toast 元素添加到文档中
-  document.body.appendChild(toast);
-
-  // 显示 Toast 元素
-  toast.classList.add("show");
-
-  // 隐藏 Toast 元素
-  setTimeout(() => {
-    toast.classList.remove("show");
-    // 删除 Toast 元素
-    setTimeout(() => {
-      document.body.removeChild(toast);
-    }, 300);
-  }, duration);
-};
-
-const setToastTheme = (toast, type) => {
-  switch (type) {
-    case TOAST_THEME_MAP.SUCCESS.label:
-      toast.classList.add(TOAST_THEME_MAP.SUCCESS.value);
-      break;
-    case TOAST_THEME_MAP.ERROR.label:
-      toast.classList.add(TOAST_THEME_MAP.ERROR.value);
-      break;
-    case TOAST_THEME_MAP.WARNING.label:
-      toast.classList.add(TOAST_THEME_MAP.WARNING.value);
-      break;
-    default:
-      break;
+  try {
+    await navigator.clipboard.writeText(textToCopy);
+    return true;
+  } catch (error) {
+    console.error('Error copying to clipboard:', error);
+    return false;
   }
+};
+
+/**
+ * Toast handling class to show notifications
+ */
+class Toast {
+  static show(message, type = TOAST_THEME_MAP.SUCCESS.label, duration = 500) {
+    const toast = document.createElement('div');
+    toast.classList.add('toast');
+    toast.textContent = message;
+    this.setTheme(toast, type);
+
+    document.body.appendChild(toast);
+    toast.classList.add('show');
+
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => {
+        document.body.removeChild(toast);
+      }, 300);
+    }, duration);
+  }
+
+  static setTheme(toast, type) {
+    toast.classList.add(TOAST_THEME_MAP[type.toUpperCase()].value);
+  }
+}
+
+// Replace showToast function calls with the Toast class
+const showToast = (message, type, duration) => {
+  Toast.show(message, type, duration);
 };

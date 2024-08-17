@@ -1,24 +1,44 @@
-
 :root {
-  --success-icon: "✅ ";
-  --warning-icon: "🔔 ";
-  --error-icon: "❌ ";
+  --success-icon: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="12" fill="%234CAF50" viewBox="0 0 24 24"%3E%3Cpath d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-1.707 17.293l-4.243-4.243 1.414-1.414L10.293 14.17l6.586-6.586 1.414 1.414-8 8a1 1 0 01-1.414 0z"/%3E%3C/svg%3E');
+  --warning-icon: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="12" fill="%23FFC107" viewBox="0 0 24 24"%3E%3Cpath d="M1.41 21.59l10.59-18.96c.47-.82 1.69-.82 2.16 0l10.59 18.96c.47.82-.12 1.86-1.08 1.86H2.49c-.96 0-1.55-1.04-1.08-1.86zM13 18v-2h-2v2h2zm0-4V8h-2v6h2z"/%3E%3C/svg%3E');
+  --error-icon: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg"  width="12" fill="%23F44336" viewBox="0 0 24 24"%3E%3Cpath d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.656 16.485L16.485 17.656 12 13.171l-4.485 4.485-1.171-1.171L10.829 12 6.343 7.515l1.171-1.171L12 10.829l4.485-4.485 1.171 1.171L13.171 12l4.485 4.485z"/%3E%3C/svg%3E');
+  --primary-color: #d1d5db; /* Subtle button color */
+  --primary-light-color: #e5e7eb; /* Lighter subtle shade for hover */
+  --success-color: #d4edda; /* Softer success color */
+  --warning-color: #fff3cd; /* Softer warning color */
+  --error-color: #f8d7da; /* Softer error color */
+  --success-border-color: #c3e6cb; /* Border color for success */
+  --warning-border-color: #ffeeba; /* Border color for warning */
+  --error-border-color: #f5c6cb; /* Border color for error */
+  --background-color: #f4f7fa; /* Light background for body */
+  --text-color: #333; /* General text color */
+  --border-radius: 8px; /* Consistent border radius */
 }
-
 body {
   width: 300px;
   height: 400px;
   overflow-y: scroll;
-  font-family: Arial, sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 14px;
   padding: 10px;
+  background-color: var(--background-color); /* Added a soft background color */
+  color: var(--text-color);
+  scroll-behavior: smooth;
 }
+
 nav {
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 15px;
 }
+
+p {
+  word-break: break-all;
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
 .nav-btn-group {
   display: flex;
   gap: 10px;
@@ -29,47 +49,77 @@ nav {
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
-  padding: 10px 20px;
-  background-color: #52c41a;
-  color: #fff;
-  font-size: 16px;
-  border-radius: 5px;
+  background: #fff;
+  border-radius: var(--border-radius);
+  padding: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   opacity: 0;
-  transition: opacity 0.3s ease-in-out;
-  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+  z-index: 1000; /* Ensure toast is above other content */
 }
 
 .toast.show {
   opacity: 1;
+  transform: translateX(-50%) translateY(10px); /* Slight movement for a smooth effect */
 }
+
 /* Success toast */
 .toast.toast-success {
-  background-color: #f6ffed;
-  color: #52c41a;
+  background-color: var(--success-color);
+  color: var(--text-color);
+  border-color: var(--success-border-color);
 }
 
 /* Warning toast */
 .toast.toast-warning {
-  background-color: #fffbe6;
-  color: #faad14;
+  background-color: var(--warning-color);
+  color: var(--text-color);
+  border-color: var(--warning-border-color);
 }
 
 /* Error toast */
 .toast.toast-error {
-  background-color: #fff1f0;
-  color: #f5222d;
+  background-color: var(--error-color);
+  color: var(--text-color);
+  border-color: var(--error-border-color);
 }
 
 .toast.toast-success::before {
   content: var(--success-icon);
+  margin-right: 4px;
 }
 
-/* Warning toast */
 .toast.toast-warning::before {
   content: var(--warning-icon);
+  margin-right: 4px;
 }
 
-/* Error toast */
 .toast.toast-error::before {
   content: var(--error-icon);
+  margin-right: 4px;
+}
+
+/* Button styling (optional, if applicable) */
+button {
+  background-color: var(--primary-color);
+  color: rgb(82, 80, 80);
+  border: none;
+  padding: 5px 8px;
+  border-radius: var(--border-radius);
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--primary-light-color);
+  /* color: rgb(111, 109, 109); */
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
