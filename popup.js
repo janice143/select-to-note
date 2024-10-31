@@ -18,6 +18,8 @@ const TOAST_THEME_MAP = {
   }
 };
 
+const NOTE_ELEMENT_CLASS_NAME = 'note-item';
+const NOTE_ELEMENT_DELETED_CLASS = 'deleted';
 /**
  * Load the note list on DOMContentLoaded event
  */
@@ -58,7 +60,16 @@ const getNoteListProm = async () => {
   try {
     const res = await chrome.storage.sync.get();
     const { noteList = [] } = res;
-    return noteList;
+
+    const noteElementList = document.querySelectorAll(
+      '.' + NOTE_ELEMENT_CLASS_NAME
+    );
+    return noteList.filter(
+      (_, index) =>
+        !noteElementList?.[index]?.classList?.contains(
+          NOTE_ELEMENT_DELETED_CLASS
+        )
+    );
   } catch (error) {
     console.error('Error fetching note list:', error);
     return [];
@@ -83,14 +94,20 @@ const initNoteList = async () => {
  */
 const addNoteToBoard = async () => {
   const noteList = await getNoteListProm();
-
   if (!noteList.length) return showEmpty();
 
   const fragment = document.createDocumentFragment(); // Create a document fragment
 
   noteList.forEach((note, index) => {
     const noteElement = document.createElement('p');
+    noteElement.classList.add(NOTE_ELEMENT_CLASS_NAME);
     noteElement.textContent = `${index + 1}. ${note}`;
+
+    // Add event listener to toggle 'deleted' class
+    noteElement.addEventListener('click', () => {
+      noteElement.classList.toggle(NOTE_ELEMENT_DELETED_CLASS);
+    });
+
     fragment.appendChild(noteElement); // Add each note to the fragment
   });
 
@@ -109,6 +126,7 @@ const showEmpty = () => {
  */
 const copyToClipboard = async () => {
   const noteList = await getNoteListProm();
+
   if (!noteList.length) return false;
 
   const textToCopy = noteList.join('\n');

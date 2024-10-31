@@ -39,6 +39,10 @@ p {
   line-height: 1.6;
 }
 
+.note-item.deleted {
+  text-decoration: line-through;
+}
+
 .nav-btn-group {
   display: flex;
   gap: 10px;
@@ -112,6 +116,10 @@ button {
   font-size: 14px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+}
+
+button.copy {
+  background-color: rgb(255 0 0 / 16%);
 }
 
 button:hover {
