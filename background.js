@@ -61,16 +61,18 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 // Add a note to the note list and save it to chrome.storage.sync
 const addNoteToBoard = async (value) => {
   try {
-    const { noteList = [] } = await getNoteListProm(); // Get the current note list from storage
-    noteList.push(value); // Add the new note to the list
-
-    // Save the updated note list back to storage
+    const { noteList = [] } = await getNoteListProm();
+    noteList.push({
+      id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      text: value,
+      done: false
+    });
     chrome.storage.sync.set({ noteList }, () => {
       console.log('Stored note:', value);
       console.log('Current note list:', noteList);
     });
   } catch (error) {
-    console.error('Error adding note:', error); // Log any errors that occur
+    console.error('Error adding note:', error);
   }
 };
 

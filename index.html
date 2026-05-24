@@ -8,11 +8,24 @@
     <nav>
       <h1 id="title">Note Board</h1>
       <div class="nav-btn-group">
-        <button class="clear">clear</button>
-        <button class="copy">copy</button>
+        <button class="add-note-btn" title="add a new note">add</button>
+        <button class="clear" title="clear all notes">clear</button>
+        <button class="copy-all" title="copy all notes">copy</button>
       </div>
     </nav>
-    <div id="noteList"></div>
+    <div class="input-row hidden">
+      <input type="text" id="noteInput" placeholder="Type a note, then press Enter..." />
+      <button class="add" title="add a note">add</button>
+    </div>
+    <div id="noteList" class="empty-state">Nothing here yet~
+      <span class="empty-hint">Select text on a page and right-click → "Add to Note Board", or click <b>add</b> above to add manually.</span>
+    </div>
+    <div id="contextMenu" class="context-menu hidden">
+      <div class="ctx-item" data-action="copy">copy</div>
+      <div class="ctx-item" data-action="edit">edit</div>
+      <div class="ctx-item destructive" data-action="delete">delete</div>
+      <div class="ctx-item" data-action="done">done</div>
+    </div>
     <script src="popup.js"></script>
   </body>
 </html>
