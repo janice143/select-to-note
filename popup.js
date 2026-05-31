@@ -23,6 +23,7 @@ let lastClickId = null;
 let lastClickTime = 0;
 let pendingCopyId = null;
 let pendingCopyTimer = null;
+let isEditingId = null;
 
 document.addEventListener('DOMContentLoaded', () => {
   addNoteToBoard();
@@ -106,7 +107,16 @@ const getNoteListProm = async () => {
 };
 
 const setNoteList = async (noteList) => {
-  await chrome.storage.sync.set({ noteList });
+  return new Promise((resolve, reject) => {
+    chrome.storage.sync.set({ noteList }, () => {
+      if (chrome.runtime.lastError) {
+        console.error('Error saving noteList:', chrome.runtime.lastError);
+        reject(chrome.runtime.lastError);
+      } else {
+        resolve();
+      }
+    });
+  });
 };
 
 const initNoteList = async () => {
@@ -127,6 +137,9 @@ const generateId = () => {
 
 const onNoteClick = async (e) => {
   const id = e.currentTarget.dataset.id;
+
+  // Don't trigger copy if we're editing a note
+  if (isEditingId) return;
 
   // Cancel any pending copy if this click is part of a double-click sequence
   if (pendingCopyId === id) {
@@ -268,7 +281,6 @@ const copyToClipboard = async () => {
   if (!noteList.length) return false;
 
   const textToCopy = noteList
-    .filter((n) => !n.done)
     .map((n) => n.text)
     .join('\n');
 
@@ -382,21 +394,39 @@ const startEdit = async (id, element) => {
   const note = noteList.find((n) => n.id === id);
   if (!note) return;
 
+  // Cancel any pending copy when starting edit
+  if (pendingCopyId === id) {
+    clearTimeout(pendingCopyTimer);
+    pendingCopyId = null;
+    pendingCopyTimer = null;
+  }
+
+  isEditingId = id;
+
   const input = document.createElement('input');
   input.type = 'text';
   input.value = note.text;
   input.classList.add('edit-input');
 
   const finishEdit = async () => {
+    // Cancel any pending copy when finishing edit
+    if (pendingCopyId === id) {
+      clearTimeout(pendingCopyTimer);
+      pendingCopyId = null;
+      pendingCopyTimer = null;
+    }
+
     const newText = input.value.trim();
     if (newText && newText !== note.text) {
       note.text = newText;
       await setNoteList(noteList);
     }
+    isEditingId = null;
     await refreshNoteBoard();
   };
 
   const cancelEdit = () => {
+    isEditingId = null;
     refreshNoteBoard();
   };
 
