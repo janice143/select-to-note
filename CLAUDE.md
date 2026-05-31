@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Type
 
-Chrome Extension (Manifest V3) - QuickNote, a web clipper and todo.
+Chrome Extension (Manifest V3) - Note Board, a web clipper and todo.
 
 ## Architecture
 

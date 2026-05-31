@@ -1,5 +1,5 @@
 {
-  "name": "QuickNote",
+  "name": "Note Board",
   "version": "2.0",
   "manifest_version": 3,
   "description": "Your minimal web clipper and todo. Select text, save URLs, add notes by hand — check them off when done.",

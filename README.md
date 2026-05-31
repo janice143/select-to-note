@@ -1,16 +1,16 @@
 
-# QuickNote - Web Clipper & Todo
+# Note Board - Web Clipper & Todo
 
 ## Overview
 
-QuickNote is a lightweight Chrome extension — part web clipper, part todo. Select text or save page URLs, add your own notes, and mark them done when finished. No sign-in, no sync — just fast, temporary storage.
+Note Board is a lightweight Chrome extension — part web clipper, part todo. Select text or save page URLs, add your own notes, and mark them done when finished. No sign-in, no sync — just fast, temporary storage.
 
 ## Features
 
 - **Web Clipper**: Select text on any page and save it via right-click → "Add to Note Board". Also saves page URLs the same way.
 - **Manual Notes**: Add notes directly in the popup with the **add** button.
 - **Mark Done**: Right-click any note to toggle it as done/undone.
-- **Copy All**: One-click copy of all non-done notes to clipboard.
+- **Copy All**: One-click copy of all notes to clipboard.
 - **Clear All**: Wipe the board with confirmation.
 
 ## Installation
@@ -23,8 +23,8 @@ QuickNote is a lightweight Chrome extension — part web clipper, part todo. Sel
 
 ## Usage
 
-1. Right-click on a web page and use the context menu to add selected text or the page URL to QuickNote.
-2. Open the QuickNote popup from the Chrome toolbar to view your saved notes.
+1. Right-click on a web page and use the context menu to add selected text or the page URL to Note Board.
+2. Open the Note Board popup from the Chrome toolbar to view your saved notes.
 3. Use the **Copy to Clipboard** button to copy all notes.
 4. Use the **Clear** button to delete all saved notes.
 
@@ -43,18 +43,18 @@ To contribute or modify this extension:
 
 ---
 
-# QuickNote - 网页剪辑器 & 待办
+# Note Board - 网页剪辑器 & 待办
 
 ## 概述
 
-QuickNote 是一个轻量级 Chrome 插件 — 既是网页剪辑器，也是待办工具。选中网页文字或保存页面链接，手动添加笔记，完成了就标记为 done。不登录、不同步 — 快，简单，临时用。
+Note Board 是一个轻量级 Chrome 插件 — 既是网页剪辑器，也是待办工具。选中网页文字或保存页面链接，手动添加笔记，完成了就标记为 done。不登录、不同步 — 快，简单，临时用。
 
 ## 功能特点
 
 - **网页剪辑**：在任意页面选中文字 → 右键 "Add to Note Board" 保存，也可以右键页面保存链接。
 - **手动添加**：在弹出窗口里点 **add** 按钮直接输入笔记。
 - **标记完成**：右键任意笔记切换 done/undone 状态。
-- **复制全部**：一键复制所有未完成笔记到剪贴板。
+- **复制全部**：一键复制所有笔记到剪贴板。
 - **清空**：点 clear 带确认框清空全部笔记。
 
 ## 安装步骤
@@ -67,8 +67,8 @@ QuickNote 是一个轻量级 Chrome 插件 — 既是网页剪辑器，也是待
 
 ## 使用说明
 
-1. 在网页上右键单击，通过上下文菜单将选中的文本或网页 URL 添加到 QuickNote。
-2. 从 Chrome 工具栏打开 QuickNote 弹出窗口，查看已保存的笔记。
+1. 在网页上右键单击，通过上下文菜单将选中的文本或网页 URL 添加到 Note Board。
+2. 从 Chrome 工具栏打开 Note Board 弹出窗口，查看已保存的笔记。
 3. 使用**复制到剪贴板**按钮复制所有笔记。
 4. 使用**清空**按钮删除所有已保存的笔记。
 
